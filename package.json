@@ -9,18 +9,19 @@
     "watch": "webpack --watch",
     "start": "webpack serve --open",
     "build": "webpack",
-    "cli": "node src/ts/index.ts"
+    "cli": "npx ts-node src/ts/index.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@jest/globals": "^29.2.1",
     "@types/jest": "^29.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
     "autoprefixer": "^10.4.8",
     "css-loader": "^6.7.1",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-import": "^2.27.5",
@@ -47,6 +48,7 @@
     "webpack-dev-server": "^4.10.1"
   },
   "dependencies": {
-    "date-fns": "^2.29.3"
+    "date-fns": "^2.29.3",
+    "easy-table": "^1.2.0"
   }
 }

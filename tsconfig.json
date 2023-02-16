@@ -1,12 +1,24 @@
 {
-  "files": ["src/ts/index.ts", "src/ts/types/custom.d.ts"],
+  "files": [
+    "src/ts/index.ts",
+    "src/ts/Holder.ts",
+    "src/ts/Project.ts",
+    "src/ts/Task.ts",
+    "src/ts/TodoList.ts",
+    "src/ts/cli.ts",
+    "src/ts/testingFunctions.ts",
+    "src/ts/types/custom.d.ts"
+  ],
   "compilerOptions": {
     "outDir": "./dist/js/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "CommonJS",
     "target": "es5",
     "allowJs": true,
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["src/ts/**/*.ts"],
+  "exclude": ["node_modules"]
 }

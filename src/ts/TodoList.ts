@@ -3,22 +3,14 @@ import Project from './Project';
 import testProject from './testingFunctions';
 
 class TodoList extends Holder<Project> {
-  _collection: Project[];
-
   _current: Project;
 
   postInitialization(): void {
     this._collection = [];
   }
 
-  list(): string[] {
-    const list: string[] = [];
-
-    this._collection.forEach((p: Project) => {
-      list.push(p.title);
-    });
-
-    return list;
+  list(): Project[] {
+    return this._collection;
   }
 
   getProject(title: string): Project | undefined {

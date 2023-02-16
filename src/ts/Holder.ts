@@ -7,7 +7,7 @@ type childArgs = HolderArgs;
 export abstract class Holder<T> {
   title: string;
 
-  abstract _collection: T[];
+  protected _collection: T[];
 
   public constructor(args: HolderArgs) {
     this.title = args.title;

@@ -1,3 +1,4 @@
 // import '../scss/main.scss';
+import cli from './cli';
 
-console.log('Hello, world!');
+cli();
