@@ -8,7 +8,8 @@
     "installDev": "npm install && npx install-peerdeps --dev eslint-config-airbnb",
     "watch": "webpack --watch",
     "start": "webpack serve --open",
-    "build": "webpack"
+    "build": "webpack",
+    "cli": "node src/ts/index.ts"
   },
   "author": "",
   "license": "ISC",
