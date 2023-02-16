@@ -1,0 +1,12 @@
+{
+  "files": ["src/ts/index.ts", "src/ts/types/custom.d.ts"],
+  "compilerOptions": {
+    "outDir": "./dist/js/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true,
+    "moduleResolution": "node"
+  }
+}
