@@ -1,13 +1,9 @@
 import { compareAsc, isToday } from 'date-fns';
-import { Holder } from './Holder';
-import Task from './Task';
+import { Holder } from './Holder.js';
+import type Task from './Task.js';
 
 export default class Project extends Holder<Task> {
-  _collection: Task[];
-
-  postInitialization() {
-    this._collection = [];
-  }
+  postInitialization() {}
 
   private _sort() {
     this._collection.sort((a: Task, b: Task) =>

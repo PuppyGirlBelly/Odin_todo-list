@@ -13,12 +13,18 @@
     "outDir": "./dist/js/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": ["src/ts/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/ts/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json"
 }

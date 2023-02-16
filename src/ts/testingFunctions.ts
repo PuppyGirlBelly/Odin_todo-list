@@ -4,8 +4,8 @@ import {
   endOfTomorrow,
   endOfYesterday,
 } from 'date-fns';
-import Project from './Project';
-import Task from './Task';
+import Project from './Project.js';
+import Task from './Task.js';
 
 function testProject(title: string) {
   const proj = new Project({

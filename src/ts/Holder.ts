@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export interface HolderArgs {
   title: string;
 }
@@ -11,6 +12,8 @@ export abstract class Holder<T> {
 
   public constructor(args: HolderArgs) {
     this.title = args.title;
+
+    this._collection = [];
 
     this.postInitialization(args);
   }

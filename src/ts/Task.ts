@@ -1,4 +1,6 @@
-import { endOfDay } from 'date-fns';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
+import { endOfDay, format } from 'date-fns';
 
 interface TaskArgs {
   title?: string;
@@ -29,7 +31,7 @@ export default class Task {
   public constructor(args: TaskArgs) {
     this.title = args.title || 'New task';
     this.description = args.description || 'This is a new task';
-    this.dueDate = args.dueDate || new Date();
+    this._dueDate = endOfDay(args.dueDate || new Date());
     this.notes = '';
     this.checklist = false;
     this._priority = Priority.LOW;
@@ -42,6 +44,10 @@ export default class Task {
   public set dueDate(value: Date) {
     this._dueDate = value;
     this._dueDate = endOfDay(this._dueDate);
+  }
+
+  public printDueDate(): string {
+    return format(this._dueDate, 'LLL d Y');
   }
 
   public get priority(): number {

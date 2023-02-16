@@ -1,12 +1,13 @@
-import { Holder } from './Holder';
-import Project from './Project';
-import testProject from './testingFunctions';
+import { Holder } from './Holder.js';
+import Project from './Project.js';
+import testProject from './testingFunctions.js';
 
 class TodoList extends Holder<Project> {
-  _current: Project;
+  private _current!: Project;
 
   postInitialization(): void {
-    this._collection = [];
+    this._collection.push(testProject('Test Project 1'));
+    this._current = this._collection[0] || this.getTodaysTasks();
   }
 
   list(): Project[] {
@@ -17,9 +18,14 @@ class TodoList extends Holder<Project> {
     return this._collection.find((p) => p.title === title);
   }
 
-  getCurrent(): Project {
-    if (this._collection.length === 0) return this.getTodaysTasks();
-    if (!this._current) [this._current] = this._collection;
+  set current(proj: Project) {
+    this._current = proj;
+  }
+
+  get current(): Project {
+    if (!this._current) {
+      this._current = this._collection[0] || this.getTodaysTasks();
+    }
     return this._current;
   }
 
@@ -30,7 +36,9 @@ class TodoList extends Holder<Project> {
 
     this._collection.forEach((proj) => {
       proj.getTodaysTasks().forEach((subtask) => {
-        todays.add(subtask);
+        const t = subtask;
+        t.notes = proj.title;
+        todays.add(t);
       });
     });
 
@@ -42,8 +50,6 @@ const todoList = new TodoList({
   title: 'Project Collection',
 });
 
-todoList.add(testProject('Test Project 1'));
 todoList.add(testProject('Test Project 2'));
-todoList.getCurrent();
 
 export default todoList;
