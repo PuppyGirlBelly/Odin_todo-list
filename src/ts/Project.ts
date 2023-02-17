@@ -3,7 +3,9 @@ import { Holder } from './Holder.js';
 import type Task from './Task.js';
 
 export default class Project extends Holder<Task> {
-  postInitialization() {}
+  postInitialization() {
+    null;
+  }
 
   private _sort() {
     this._collection.sort((a: Task, b: Task) =>
@@ -18,6 +20,16 @@ export default class Project extends Holder<Task> {
   list(): Task[] {
     this._sort();
     return this._collection;
+  }
+
+  listTaskTitles(): string[] {
+    const list: string[] = [];
+
+    this._collection.forEach((task) => {
+      list.push(task.title);
+    });
+
+    return list;
   }
 
   getTodaysTasks(): Task[] {

@@ -14,6 +14,18 @@ class TodoList extends Holder<Project> {
     return this._collection;
   }
 
+  listProjectNames(): string[] {
+    const list: string[] = [];
+
+    this._collection.forEach((proj) => {
+      list.push(proj.title);
+    });
+
+    list.push("Today's Tasks");
+
+    return list;
+  }
+
   getProject(title: string): Project | undefined {
     return this._collection.find((p) => p.title === title);
   }

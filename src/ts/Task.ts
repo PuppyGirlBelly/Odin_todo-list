@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 import { endOfDay, format } from 'date-fns';
 
-interface TaskArgs {
+export interface TaskArgs {
   title?: string;
   description?: string;
   dueDate?: Date;
