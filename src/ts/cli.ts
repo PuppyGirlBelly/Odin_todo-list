@@ -11,6 +11,8 @@ inquirer.registerPrompt('date', DatePrompt);
 export default class CLI {
   private static todoList = todoList;
 
+  private static ui = new inquirer.ui.BottomBar();
+
   public constructor() {
     throw new Error(
       'This is a static class. Do not instantiate a static Class.'
@@ -18,44 +20,12 @@ export default class CLI {
   }
 
   public static run() {
-    CLI.todoList.current = CLI.todoList.getTodaysTasks();
     CLI.displayTasks();
   }
 
   static clear() {
     process.stdout.write('\u001B[2J\u001B[0;0f');
     console.log('');
-  }
-
-  static selectProject() {
-    CLI.clear();
-
-    inquirer
-      .prompt([
-        {
-          type: 'rawlist',
-          name: 'project',
-          message: 'Which project would you like to select?',
-          choices: CLI.todoList.listProjectNames(),
-        },
-      ])
-      .then((answer) => {
-        const title = answer.project;
-        if (title === "Today's Tasks") {
-          CLI.todoList.current = CLI.todoList.getTodaysTasks();
-        } else {
-          const proj = CLI.todoList.getProject(title);
-          if (typeof proj === 'undefined') {
-            throw new Error(`Could not find project "${title}`);
-          } else {
-            CLI.todoList.current = proj;
-          }
-          CLI.displayTasks();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 
   static displayTasks() {
@@ -70,7 +40,7 @@ export default class CLI {
       cell('Note', task.notes);
     });
 
-    console.log(this.todoList.current.title);
+    console.log(CLI.todoList.current.title);
     console.log(taskTable);
     CLI.selectTaskAction();
   }
@@ -99,13 +69,44 @@ export default class CLI {
             CLI.addTask();
             break;
           case 'Remove Task':
-            console.log('TODO: Remove Task');
+            CLI.removeTask();
             break;
           case 'Edit Task':
-            console.log('TODO: Edit Task');
+            CLI.editTask();
             break;
           default:
             throw new Error(`Invalid taskAction option: ${answer.taskAction}`);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  static selectProject() {
+    CLI.clear();
+
+    inquirer
+      .prompt([
+        {
+          type: 'rawlist',
+          name: 'project',
+          message: 'Which project would you like to select?',
+          choices: CLI.todoList.listProjectTitles(),
+        },
+      ])
+      .then((answer) => {
+        const title = answer.project;
+        if (title === "Today's Tasks") {
+          CLI.todoList.current = CLI.todoList.getTodaysTasks();
+        } else {
+          const proj = CLI.todoList.getProject(title);
+          if (typeof proj === 'undefined') {
+            throw new Error(`Could not find project "${title}`);
+          } else {
+            CLI.todoList.current = proj;
+          }
+          CLI.displayTasks();
         }
       })
       .catch((error) => {
@@ -146,7 +147,8 @@ export default class CLI {
           dueDate: answer.dueDate,
         });
         CLI.todoList.current.add(task);
-        this.displayTasks();
+        CLI.ui.updateBottomBar(`Added task: ${task.title}`);
+        CLI.displayTasks();
       })
       .catch((error) => {
         console.log(error);
@@ -164,10 +166,76 @@ export default class CLI {
         },
       ])
       .then((answer) => {
-        // TODO: Fix API to make this more painless
-        // const task = CLI.todoList.current.find(answer.title);
-        // CLI.todoList.current.remove(task);
-        // this.displayTasks();
+        const task = CLI.todoList.current.getTask(answer.title);
+        if (task !== undefined) {
+          CLI.todoList.current.remove(task);
+          CLI.ui.updateBottomBar(`Removed task: ${task.title}`);
+        } else {
+          CLI.ui.updateBottomBar(`ERROR: ${answer.title} was not found`);
+        }
+        CLI.displayTasks();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  static editTask() {
+    inquirer
+      .prompt([
+        {
+          type: 'rawlist',
+          name: 'title',
+          message: 'Which task would you like to edit?',
+          choices: CLI.todoList.current.listTaskTitles(),
+        },
+      ])
+      .then((answer) => {
+        const task = CLI.todoList.current.getTask(answer.title);
+        if (task !== undefined) {
+          inquirer
+            .prompt([
+              {
+                type: 'input',
+                name: 'title',
+                message: 'Enter the title for your task: ',
+                default: task.title,
+              },
+              {
+                type: 'input',
+                name: 'description',
+                message: 'Enter a description for your task: ',
+                default: task.description,
+              },
+              {
+                type: 'date',
+                name: 'dueDate',
+                message: 'Enter date when your task is due: ',
+                initial: task.dueDate,
+                format: ['mm', '/', 'dd', '/', 'yyyy'],
+                date: {
+                  min: format(new Date(), 'MM/dd/yyyy'),
+                },
+              },
+            ])
+            .then((details) => {
+              const newTask = new Task({
+                title: details.title,
+                description: details.description,
+                dueDate: details.dueDate,
+              });
+              CLI.todoList.current.add(newTask);
+              CLI.todoList.current.remove(task);
+              CLI.ui.updateBottomBar(`Edited task: ${task.title}`);
+              CLI.displayTasks();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          CLI.ui.updateBottomBar(`ERROR: ${answer.title} was not found`);
+        }
+        CLI.displayTasks();
       })
       .catch((error) => {
         console.log(error);

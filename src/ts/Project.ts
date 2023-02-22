@@ -1,10 +1,17 @@
 import { compareAsc, isToday } from 'date-fns';
-import { Holder } from './Holder.js';
+import Holder from './Holder.js';
 import type Task from './Task.js';
 
+export interface ProjectArgs {
+  title: string;
+}
+
 export default class Project extends Holder<Task> {
-  postInitialization() {
-    null;
+  title!: string;
+
+  postInitialization(args: ProjectArgs) {
+    console.log(args);
+    this.title = args.title;
   }
 
   private _sort() {
@@ -25,11 +32,15 @@ export default class Project extends Holder<Task> {
   listTaskTitles(): string[] {
     const list: string[] = [];
 
-    this._collection.forEach((task) => {
+    this._collection.forEach((task: Task) => {
       list.push(task.title);
     });
 
     return list;
+  }
+
+  getTask(title: string): Task | undefined {
+    return this._collection.find((t) => t.title === title);
   }
 
   getTodaysTasks(): Task[] {

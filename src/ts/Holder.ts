@@ -1,24 +1,14 @@
-/* eslint-disable no-unused-vars */
-export interface HolderArgs {
-  title: string;
-}
-
-type childArgs = HolderArgs;
-
-export abstract class Holder<T> {
-  title: string;
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export default abstract class Holder<T> {
   protected _collection: T[];
 
-  public constructor(args: HolderArgs) {
-    this.title = args.title;
-
+  public constructor(args?: any) {
     this._collection = [];
 
     this.postInitialization(args);
   }
 
-  abstract postInitialization(args: childArgs): void;
+  abstract postInitialization(args: any): void;
 
   add(item: T): void {
     this._collection.push(item);

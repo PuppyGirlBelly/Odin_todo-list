@@ -7,29 +7,29 @@ import {
 import Project from './Project.js';
 import Task from './Task.js';
 
-function testProject(title: string) {
+function testProject(name: string) {
   const proj = new Project({
-    title,
+    title: name,
   });
 
   const task1 = new Task({
     title: 'Task 1',
-    description: `${title} Today's task`,
+    description: `${name} Today's task`,
     dueDate: endOfToday(),
   });
   const task2 = new Task({
     title: 'Task 2',
-    description: `${title} - Tomorrow's task`,
+    description: `${name} - Tomorrow's task`,
     dueDate: endOfTomorrow(),
   });
   const task3 = new Task({
     title: 'Task 3',
-    description: `${title} - Yesterday's task`,
+    description: `${name} - Yesterday's task`,
     dueDate: endOfYesterday(),
   });
   const task4 = new Task({
     title: 'Task 4',
-    description: `${title} - End of Week task`,
+    description: `${name} - End of Week task`,
     dueDate: endOfISOWeek(new Date()),
   });
 
