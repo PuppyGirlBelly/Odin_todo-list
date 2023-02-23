@@ -3,11 +3,8 @@ import Project from './Project.js';
 import testProject from './testingFunctions.js';
 
 class TodoList extends Holder<Project> {
-  current!: Project;
-
   postInitialization(): void {
     this._collection.push(testProject('Test Project 1'));
-    this.current = this._collection[0] || this.getTodaysTasks();
   }
 
   list(): Project[] {
