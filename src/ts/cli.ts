@@ -12,6 +12,12 @@ const TODO_LIST = todoList;
 
 let currentProject = TODO_LIST.getTodaysTasks();
 
+/*
+ * TODO: Edit task note/refactor description/note into same field
+ * TODO: Increase/Increment priority, sort by priority
+ * TODO: Add project, edit project title, delete project
+ */
+
 export default class CLI {
   public constructor() {
     throw new Error(
