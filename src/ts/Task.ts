@@ -2,12 +2,6 @@
 /* eslint-disable no-shadow */
 import { endOfDay, format } from 'date-fns';
 
-export interface TaskArgs {
-  title?: string;
-  description?: string;
-  dueDate?: Date;
-}
-
 enum Priority {
   LOW = 0,
   MEDIUM,
@@ -15,26 +9,31 @@ enum Priority {
   URGENT,
 }
 
+export interface TaskArgs {
+  done?: boolean;
+  priority?: Priority;
+  title?: string;
+  dueDate?: Date;
+  description?: string;
+}
+
 export default class Task {
   title: string;
 
   description: string;
 
-  notes: string;
-
-  checklist: boolean;
+  finished: boolean;
 
   private _priority: Priority;
 
   private _dueDate: Date;
 
   public constructor(args: TaskArgs) {
+    this.finished = args.done || false;
+    this._priority = args.priority || Priority.LOW;
     this.title = args.title || 'New task';
-    this.description = args.description || 'This is a new task';
     this._dueDate = endOfDay(args.dueDate || new Date());
-    this.notes = '';
-    this.checklist = false;
-    this._priority = Priority.LOW;
+    this.description = args.description || 'This is a new task';
   }
 
   public get dueDate(): Date {

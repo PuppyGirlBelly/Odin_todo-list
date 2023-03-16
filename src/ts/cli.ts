@@ -12,9 +12,54 @@ const TODO_LIST = todoList;
 
 let currentProject = TODO_LIST.getTodaysTasks();
 
+enum Priority {
+  LOW = 0,
+  MEDIUM,
+  HIGH,
+  URGENT,
+}
+
+function stringToPriority(input: string): Priority {
+  switch (input) {
+    case 'Low': {
+      return Priority.LOW;
+    }
+    case 'Medium': {
+      return Priority.MEDIUM;
+    }
+    case 'High': {
+      return Priority.HIGH;
+    }
+    case 'Urgent': {
+      return Priority.URGENT;
+    }
+    default: {
+      return Priority.LOW;
+    }
+  }
+}
+
+function priorityToString(input: Priority): string {
+  switch (input) {
+    case Priority.LOW: {
+      return 'Low';
+    }
+    case Priority.MEDIUM: {
+      return 'Medium';
+    }
+    case Priority.HIGH: {
+      return 'High';
+    }
+    case Priority.URGENT: {
+      return 'Urgent';
+    }
+    default: {
+      return 'Low';
+    }
+  }
+}
+
 /*
- * TODO: Edit task note/refactor description/note into same field
- * TODO: Increase/Increment priority, sort by priority
  * TODO: Add project, edit project title, delete project
  */
 
@@ -84,13 +129,29 @@ export default class CLI {
             min: format(today, 'MM/dd/yyyy'),
           },
         },
+        {
+          type: 'list',
+          name: 'priority',
+          message: 'Enter the priority of your task: ',
+          choices: ['Low', 'Medium', 'High', 'Urgent'],
+          default: 'Low',
+        },
+        {
+          type: 'list',
+          name: 'done',
+          message: 'Is this task finished: ',
+          choices: ['Finished', 'In-Progress'],
+          default: 'In-Progress',
+        },
       ])
       .then(
         (answer) =>
           new Task({
+            done: answer.done === 'Finished',
             title: answer.title,
             description: answer.description,
             dueDate: answer.dueDate,
+            priority: stringToPriority(answer.priority),
           })
       )
       .catch((error) => {
@@ -103,11 +164,11 @@ export default class CLI {
 
     const tasks = currentProject.list();
     const taskTable = Table.print(tasks, (task: Task, cell) => {
-      cell('Done', task.checklist);
-      cell('Priority', task.priority);
+      cell('Done', task.finished ? '[X]' : '[ ]');
+      cell('Priority', priorityToString(task.priority));
       cell('Title', task.title);
       cell('Due', task.printDueDate());
-      cell('Note', task.notes);
+      cell('Description', task.description);
     });
     console.log(currentProject.title);
     console.log(taskTable);

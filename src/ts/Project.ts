@@ -10,13 +10,15 @@ export default class Project extends Holder<Task> {
   title!: string;
 
   postInitialization(args: ProjectArgs) {
-    console.log(args);
     this.title = args.title;
   }
 
   private _sort() {
-    this._collection.sort((a: Task, b: Task) =>
-      compareAsc(a.dueDate, b.dueDate)
+    this._collection.sort(
+      (a: Task, b: Task) =>
+        +a.finished - +b.finished ||
+        b.priority - a.priority ||
+        compareAsc(a.dueDate, b.dueDate)
     );
   }
 

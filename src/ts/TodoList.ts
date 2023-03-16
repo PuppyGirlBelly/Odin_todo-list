@@ -35,7 +35,6 @@ class TodoList extends Holder<Project> {
     this._collection.forEach((proj) => {
       proj.getTodaysTasks().forEach((subtask) => {
         const t = subtask;
-        t.notes = proj.title;
         todays.add(t);
       });
     });
